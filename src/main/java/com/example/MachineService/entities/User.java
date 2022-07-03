@@ -26,13 +26,13 @@ public class User {
 
     public User(Long id, String username) {
         this.id = id;
-        this.username = username;
+        this.name = username;
     }
 
     @Id
     private Long id;
 
-    private String username;
+    private String name;
 
     @OneToMany
     private List<Machine> machines=new ArrayList<>();
