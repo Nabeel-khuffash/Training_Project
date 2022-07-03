@@ -19,25 +19,31 @@ public class MachineService {
         this.userRepository = userRepository;
     }
 
-    public void addMachine(Machine machine)
+    public Integer addMachine(Machine machine, Long userid)
     {
-        userRepository.save(new User(machine.getUser().getId()));
+        if(!isUserIn(userid)) return 2;
+        else if(machineRepository.findById(machine.getId()).isPresent()) return 1;
+        machine.setUser(new User(userid));
         machineRepository.save(machine);
+        return 0;
     }
 
-    public boolean deleteMachines(Long userId)
+    public Integer deleteMachines(Long userId, Long deviceId)
     {
-        Optional<User> user= userRepository.findById(userId);
-        if(user.isPresent())
-        {
-            machineRepository.deleteAllByUserId(userId);
-            return true;
-        }
-        return false;
+        if(!isUserIn(userId)) return 2;
+        if(!machineRepository.findById(deviceId).isPresent()) return 1;
+        machineRepository.deleteById(deviceId);
+        return 1;
+    }
+
+    public boolean isUserIn(Long id)
+    {
+        if(userRepository.findById(id).isPresent()) return true;
+        else return false;
     }
 
     public void updateMachine(Machine machine)
     {
-        addMachine(machine);
+        //addMachine(machine);
     }
 }

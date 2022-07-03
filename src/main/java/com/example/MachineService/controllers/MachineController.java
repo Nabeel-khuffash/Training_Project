@@ -18,43 +18,83 @@ public class MachineController {
     }
 
     //@GetMapping("/{userId}/machine/device/{deviceId}")
-    @GetMapping("/{userId}/machine/device/{deviceId}")
-    public String addMachineRequest(Model model, @PathVariable Long userId, @PathVariable Long deviceId)
+    @GetMapping("/{userId}/machine/device/add")
+    public String addMachineRequest(Model model, @PathVariable Long userId)
     {
-        Machine machine=new Machine();
-        machine.setId(deviceId);
-        machine.setUser(new User(userId));
-        model.addAttribute("Machine", machine);
-        model.addAttribute("id", deviceId);
+        if(!machineService.isUserIn(userId))
+        {
+            model.addAttribute("msg","user Id is invalid");
+            return "fails";
+        }
+        model.addAttribute("Machine", new Machine());
         model.addAttribute("userId", userId);
         return "AddDevice"; //add machine form
     }
 
-    @PostMapping("/{userId}/machine/device/{deviceId}")
-    String addMachine(Machine machine, @PathVariable Long userId, @PathVariable Long deviceId)
+    @PostMapping("/{userId}/machine/device/add")
+    String addMachine(Machine machine, @PathVariable Long userId, Model model)
     {
-        machine.setId(deviceId);
-        machine.setUser(new User(userId));
-        machineService.addMachine(machine);
-        return "redirect:/test"; //redirect to a valid location
+        //this may happen only if post request made out of ui
+        Integer response =machineService.addMachine(machine, userId);
+        if(response==2)
+        {
+            model.addAttribute("msg","Something went wrong");
+            return "failed";
+        }
+        else if(response==1)
+        {
+            model.addAttribute("failed","true");
+            model.addAttribute("Machine", new Machine());
+            model.addAttribute("userId", userId);
+            return "AddDevice";
+        }
+        model.addAttribute("success","true");
+        model.addAttribute("Machine", new Machine());
+        model.addAttribute("userId", userId);
+        return "AddDevice";
     }
 
-    @DeleteMapping("/tenant/{userId}/machine/device/")
-    String deleteMachine(@PathVariable Long userId){
-
-        boolean isFound =machineService.deleteMachines(userId);
-        if(isFound)
+    @GetMapping("/{userId}/machine/device/delete")
+    String deleteMachinePage(@PathVariable Long userId, Model model) {
+        if(!machineService.isUserIn(userId))
         {
-
+            model.addAttribute("msg","invalid user id");
+            return "fails";
         }
         else {
-
+            model.addAttribute("machine",new Machine());
+            return"DeleteDevice";
         }
-
-        return "";
+    }
+    @DeleteMapping("/")
+    String test(Model model)
+    {
+        model.addAttribute("msg","worked");
+        return "fails";
     }
 
-    @PutMapping("/tenant/{userId}/machine/device/{deviceId}")
+    @DeleteMapping("/{userId}/machine/device/{string}")
+    String deleteMachine(@PathVariable Long userId, @PathVariable String string, Model model){
+        System.out.println("entered");
+        //Long deviceId = Long.parseLong(string.substring(string.indexOf('=')+1,string.length()));
+        Integer response = machineService.deleteMachines(userId, 22L);
+        if(response==2)
+        {
+            model.addAttribute("msg", "invalid user id!");
+            return "fails";
+        }
+        else if(response==1)
+        {
+            model.addAttribute("failed","true");
+            return"DeleteDevice";
+        }
+        else {
+            model.addAttribute("success","true");
+            return"DeleteDevice";
+        }
+    }
+
+    @PutMapping("/{userId}/machine/device/{deviceId}")
     String updateMachine(@PathVariable Long userId, @PathVariable Long deviceId, @RequestBody Machine machine)
     {
         machineService.updateMachine(machine);
