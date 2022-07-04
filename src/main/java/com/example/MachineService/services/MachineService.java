@@ -28,12 +28,21 @@ public class MachineService {
         return 0;
     }
 
+    public Integer updateMachine(Machine machine, Long userid)
+    {
+        if(!isUserIn(userid)) return 2;
+        else if(!machineRepository.findById(machine.getId()).isPresent()) return 1;
+        machine.setUser(new User(userid));
+        machineRepository.save(machine);
+        return 0;
+    }
+
     public Integer deleteMachines(Long userId, Long deviceId)
     {
         if(!isUserIn(userId)) return 2;
         if(!machineRepository.findById(deviceId).isPresent()) return 1;
         machineRepository.deleteById(deviceId);
-        return 1;
+        return 0;
     }
 
     public boolean isUserIn(Long id)
@@ -42,8 +51,4 @@ public class MachineService {
         else return false;
     }
 
-    public void updateMachine(Machine machine)
-    {
-        //addMachine(machine);
-    }
 }
