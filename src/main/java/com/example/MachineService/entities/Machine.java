@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,25 +16,14 @@ import java.util.List;
 @EqualsAndHashCode
 public class Machine {
 
-    public Machine(Long id, String name, String ipAddress, String location, Long userid) {
+    public Machine(Long id) {
         this.id = id;
-        this.name = name;
-        this.ipAddress = ipAddress;
-        this.location = location;
-        this.user = new User(userid);
-    }
-
-    public Machine(Long id, String name, String ipAddress, String location) {
-        this.id = id;
-        this.name = name;
-        this.ipAddress = ipAddress;
-        this.location = location;
     }
 
     public Machine() {
     }
 
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     private String name;

@@ -2,13 +2,17 @@ package com.example.MachineService.controllers;
 
 import com.example.MachineService.entities.User;
 import com.example.MachineService.services.UserService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.management.openmbean.KeyAlreadyExistsException;
+import javax.ws.rs.core.Response;
 
 
-@Controller
+@RestController
+@RequestMapping("/")
 public class UserController {
 
     private UserService userService;
@@ -17,20 +21,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("users/add")
-    public String addUserPage(Model model)
+    @PostMapping("users")
+    public Response addUser(@RequestBody User user)
     {
-        model.addAttribute("User", new User());
-        return "AddUser";
-    }
-
-    @PostMapping("users/add")
-    public String addUser(User user, Model model)
-    {
-        boolean success= userService.addUser(user);
-        if (success) model.addAttribute("success", "true");
-        else model.addAttribute("failed", "true");
-        model.addAttribute("User", new User());
-        return "AddUser";
+        try {
+            User result = userService.addUser(user);
+            return Response.status(Response.Status.CREATED).entity(user).build();
+        } catch (KeyAlreadyExistsException keyAlreadyExistsException) {
+            return Response.status(Response.Status.CONFLICT).entity(keyAlreadyExistsException.getMessage()).build();
+        }
     }
 }

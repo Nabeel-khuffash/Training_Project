@@ -3,9 +3,10 @@ package com.example.MachineService.services;
 import com.example.MachineService.entities.User;
 import com.example.MachineService.repositories.MachineRepository;
 import com.example.MachineService.repositories.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import javax.management.openmbean.KeyAlreadyExistsException;
 
 @Service
 public class UserService {
@@ -19,17 +20,19 @@ public class UserService {
     }
 
 
-    public boolean addUser(User user)
+    @SneakyThrows
+    public User addUser(User user)
     {
-        Optional<User> userCheck=userRepository.findById(user.getId());
-        Optional<User> userCheck2=userRepository.findByName(user.getName());
-        if(userCheck.isPresent() || userCheck2.isPresent())
-        {
-            return false;
+        if (userRepository.findByName(user.getName()).isPresent()) {
+            throw new KeyAlreadyExistsException("User Name already exist");
         }
-        else {
-            userRepository.save(user);
-            return true;
-        }
+        userRepository.save(user);
+        return user;
+    }
+
+    public boolean isUserIn(Long id)
+    {
+        if(userRepository.findById(id).isPresent()) return true;
+        else return false;
     }
 }
