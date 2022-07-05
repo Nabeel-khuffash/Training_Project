@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
+import java.util.Optional;
 
 @Service
 public class MachineService {
@@ -56,4 +57,18 @@ public class MachineService {
         machineRepository.deleteById(deviceId);
     }
 
+    public void updateMachine(Machine machine)
+    {
+        machineRepository.save(machine);
+    }
+    public boolean isMachineIn(Long id)
+    {
+        if(machineRepository.findById(id).isPresent()) return true;
+        else return false;
+    }
+
+    public Optional<Machine> findMachineById(Long id)
+    {
+        return machineRepository.findById(id);
+    }
 }

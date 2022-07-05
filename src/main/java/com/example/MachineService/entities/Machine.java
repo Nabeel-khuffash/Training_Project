@@ -35,5 +35,6 @@ public class Machine {
     @ManyToOne
     private User user;
 
-
+    @ManyToMany
+    List<Task> tasks= new ArrayList<>();
 }
