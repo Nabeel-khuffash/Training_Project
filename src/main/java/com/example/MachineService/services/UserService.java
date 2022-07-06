@@ -19,8 +19,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-
-    @SneakyThrows
     public User saveOrUpdateUser (User user)
     {
         userRepository.save(user);

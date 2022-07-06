@@ -21,7 +21,6 @@ public class MachineService {
         this.userService = userService;
     }
 
-    @SneakyThrows
     public Machine addMachine(Machine machine, Long userid)
     {
         if(!userService.isUserIn(userid)) {
