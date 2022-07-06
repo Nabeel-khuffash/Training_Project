@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user")
 public class UserController {
 
     private UserService userService;
@@ -21,14 +21,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("users")
-    public Response addUser(@RequestBody User user)
-    {
+    @PostMapping("/")
+    public Response addUser(@RequestBody User user) {
         try {
             User result = userService.addUser(user);
             return Response.status(Response.Status.CREATED).entity(user).build();
         } catch (KeyAlreadyExistsException keyAlreadyExistsException) {
             return Response.status(Response.Status.CONFLICT).entity(keyAlreadyExistsException.getMessage()).build();
+        } catch (Exception exception) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
 }

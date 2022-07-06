@@ -28,6 +28,8 @@ public class MachineController {
             return Response.status(Response.Status.CREATED).entity(machine).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
+        }catch (Exception exception) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
 
@@ -39,6 +41,8 @@ public class MachineController {
         }
         catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
+        }catch (Exception exception) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
 
@@ -50,6 +54,8 @@ public class MachineController {
         }
         catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
+        }catch (Exception exception) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
 }

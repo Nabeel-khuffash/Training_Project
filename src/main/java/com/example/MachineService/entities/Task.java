@@ -21,7 +21,8 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Task {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
@@ -31,7 +32,7 @@ public class Task {
     private String description;
 
     @ManyToMany
-    private List<Machine> machines= new ArrayList<>();
+    private List<Machine> machines = new ArrayList<>();
 
     private Integer priority;
 
@@ -41,9 +42,9 @@ public class Task {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    private Integer numberOfTrails=0;
+    private Integer numberOfTrails = 0;
 
-    private String status="pending";
+    private String status = "pending";
 
     private LocalDateTime nextExecutionTime;
 

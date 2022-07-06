@@ -21,8 +21,7 @@ public class UserService {
 
 
     @SneakyThrows
-    public User addUser(User user)
-    {
+    public User addUser(User user) {
         if (userRepository.findByName(user.getName()).isPresent()) {
             throw new KeyAlreadyExistsException("User Name already exist");
         }
@@ -30,9 +29,8 @@ public class UserService {
         return user;
     }
 
-    public boolean isUserIn(Long id)
-    {
-        if(userRepository.findById(id).isPresent()) return true;
+    public boolean isUserIn(Long id) {
+        if (userRepository.findById(id).isPresent()) return true;
         else return false;
     }
 }
