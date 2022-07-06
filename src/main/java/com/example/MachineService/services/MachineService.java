@@ -7,7 +7,6 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Response;
 import java.util.Optional;
 
 @Service
