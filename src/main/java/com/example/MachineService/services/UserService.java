@@ -21,11 +21,8 @@ public class UserService {
 
 
     @SneakyThrows
-    public User addUser(User user)
+    public User saveOrUpdateUser (User user)
     {
-        if (userRepository.findByName(user.getName()).isPresent()) {
-            throw new KeyAlreadyExistsException("User Name already exist");
-        }
         userRepository.save(user);
         return user;
     }

@@ -29,16 +29,24 @@ public class MachineController {
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         }
+        catch (Exception e)
+        {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
+        }
     }
 
     @PutMapping("/{userId}/machine/device/{deviceId}")
-    Response updateMachine(@RequestBody Machine machine, @PathVariable Long userId, Model model) {
+    Response updateMachine(@RequestBody Machine machine, @PathVariable Long userId) {
         try {
             Machine result = machineService.updateMachine(machine, userId);
             return Response.status(Response.Status.CREATED).entity(machine).build();
         }
         catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
+        }
+        catch (Exception e)
+        {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
 
@@ -50,6 +58,10 @@ public class MachineController {
         }
         catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
+        }
+        catch (Exception e)
+        {
+            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
 }

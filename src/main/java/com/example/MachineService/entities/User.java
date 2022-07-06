@@ -17,13 +17,6 @@ import java.util.List;
 @EqualsAndHashCode
 public class User {
 
-    public User(Long id) {
-        this.id = id;
-    }
-
-    public User(){}
-
-
     @Id @GeneratedValue
     private Long id;
 
@@ -31,4 +24,12 @@ public class User {
 
     @OneToMany
     private List<Machine> machines=new ArrayList<>();
+
+
+    public User(Long id) {
+        this.id = id;
+    }
+
+    public User(){}
+
 }

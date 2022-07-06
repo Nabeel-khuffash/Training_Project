@@ -16,13 +16,6 @@ import java.util.List;
 @EqualsAndHashCode
 public class Machine {
 
-    public Machine(Long id) {
-        this.id = id;
-    }
-
-    public Machine() {
-    }
-
     @Id @GeneratedValue
     private Long id;
 
@@ -35,5 +28,11 @@ public class Machine {
     @ManyToOne
     private User user;
 
+    public Machine(Long id) {
+        this.id = id;
+    }
+
+    public Machine() {
+    }
 
 }
