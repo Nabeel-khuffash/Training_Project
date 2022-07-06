@@ -27,7 +27,6 @@ public class TaskController {
             //checking if there is a conflict with the parameters
             List<Task> tasks = Arrays.asList(tasksArray);
             Map<String, String> map= new HashMap<>();
-            Void a;
             for (Task task : tasks) {
                 for (Machine machine: task.getMachines()) {
                     if(map.containsKey("t"+task.getName()+"m"+machine.getId())) throw new ParameterStrategyException("conflict in input tasks!");

@@ -84,8 +84,8 @@ public class TaskService {
 
     public Task getTask(Long userId, Long taskId) {
         Optional<Task> task = taskRepository.findById(taskId);
-        if (!task.isPresent()) throw new NotFoundException("invalid task Id");
-        if (task.get().getUser().getId() != userId)
+        if (task.isEmpty()) throw new NotFoundException("invalid task Id");
+        if (!task.get().getUser().getId().equals(userId))
             throw new ParameterMisuseException("task isn't belong to this user!");
         return task.get();
     }

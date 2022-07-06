@@ -32,7 +32,7 @@ public class MachineService {
     public Machine updateMachine(Machine machine, Long userid) {
         if (!userService.isUserIn(userid)) {
             throw new NotFoundException("User not found!");
-        } else if (!machineRepository.findById(machine.getId()).isPresent()) {
+        } else if (machineRepository.findById(machine.getId()).isEmpty()) {
             throw new NotFoundException("device Not found!");
         }
         machine.setUser(new User(userid));
@@ -44,19 +44,14 @@ public class MachineService {
         if (!userService.isUserIn(userId)) {
             throw new NotFoundException("User not found!");
         }
-        if (!machineRepository.findById(deviceId).isPresent()) {
+        if (machineRepository.findById(deviceId).isEmpty()) {
             throw new NotFoundException("device Not found!");
         }
         machineRepository.deleteById(deviceId);
     }
 
-    public void updateMachine(Machine machine) {
-        machineRepository.save(machine);
-    }
-
     public boolean isMachineIn(Long id) {
-        if (machineRepository.findById(id).isPresent()) return true;
-        else return false;
+        return machineRepository.findById(id).isPresent();
     }
 
     public Optional<Machine> findMachineById(Long id) {

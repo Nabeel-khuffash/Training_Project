@@ -26,7 +26,6 @@ public class UserService {
     }
 
     public boolean isUserIn(Long id) {
-        if (userRepository.findById(id).isPresent()) return true;
-        else return false;
+        return userRepository.findById(id).isPresent();
     }
 }

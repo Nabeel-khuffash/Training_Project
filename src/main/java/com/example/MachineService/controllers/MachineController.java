@@ -21,7 +21,7 @@ public class MachineController {
     Response addMachine(@RequestBody Machine machine, @PathVariable Long userId) {
         try {
             Machine result = machineService.addMachine(machine, userId);
-            return Response.status(Response.Status.CREATED).entity(machine).build();
+            return Response.status(Response.Status.CREATED).entity(result).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (Exception exception) {
@@ -33,7 +33,7 @@ public class MachineController {
     Response updateMachine(@RequestBody Machine machine, @PathVariable Long userId) {
         try {
             Machine result = machineService.updateMachine(machine, userId);
-            return Response.status(Response.Status.CREATED).entity(machine).build();
+            return Response.status(Response.Status.CREATED).entity(result).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (Exception exception) {
