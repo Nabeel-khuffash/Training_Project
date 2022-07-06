@@ -3,7 +3,6 @@ package com.example.MachineService.controllers;
 import com.example.MachineService.entities.Machine;
 import com.example.MachineService.services.MachineService;
 import com.example.MachineService.services.UserService;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.NotFoundException;
@@ -34,7 +33,7 @@ public class MachineController {
     }
 
     @PutMapping("/{userId}/machine/device/{deviceId}")
-    Response updateMachine(@RequestBody Machine machine, @PathVariable Long userId, Model model) {
+    Response updateMachine(@RequestBody Machine machine, @PathVariable Long userId) {
         try {
             Machine result = machineService.updateMachine(machine, userId);
             return Response.status(Response.Status.CREATED).entity(machine).build();
@@ -47,7 +46,7 @@ public class MachineController {
     }
 
     @DeleteMapping("/{userId}/machine/device/{deviceId}")
-    Response deleteMachine(@PathVariable Long userId, @PathVariable Long deviceId, Model model) {
+    Response deleteMachine(@PathVariable Long userId, @PathVariable Long deviceId) {
         try{
             machineService.deleteMachine(userId,deviceId);
             return Response.status(Response.Status.ACCEPTED).entity("Device deleted").build();
