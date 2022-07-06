@@ -11,10 +11,8 @@ import java.util.Optional;
 
 @Service
 public class MachineService {
-
-    private MachineRepository machineRepository;
-
-    private UserService userService;
+    private final MachineRepository machineRepository;
+    private final UserService userService;
 
     public MachineService(MachineRepository machineRepository, UserService userService) {
         this.machineRepository = machineRepository;

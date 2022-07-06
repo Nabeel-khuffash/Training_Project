@@ -13,10 +13,9 @@ import java.util.Optional;
 
 @Service
 public class TaskService {
-    private TaskRepository taskRepository;
-    private UserService userService;
-
-    private MachineService machineService;
+    private final TaskRepository taskRepository;
+    private final UserService userService;
+    private final MachineService machineService;
 
     public TaskService(TaskRepository taskRepository, UserService userService, MachineService machineService) {
         this.taskRepository = taskRepository;
@@ -39,7 +38,7 @@ public class TaskService {
                 Machine realMachine = machineService.findMachineById(machine.getId()).get();
                 for (Task usedTask : realMachine.getTasks()) {
                     //usedTask is a task that is already in the database and are running in that machine
-                    if (task.getName() == usedTask.getName() && task.getUser() == usedTask.getUser() && usedTask.getStatus() != "final")
+                    if (task.getName().equals(usedTask.getName()) && task.getUser().equals(usedTask.getUser()) && !usedTask.getStatus().equals("final"))
                         throw new ParameterMisuseException("task name: " + task.getName() + " is already used and running/pending by this user in machine id: " + realMachine.getId());
                 }
             }
@@ -67,6 +66,17 @@ public class TaskService {
 
     public Task reSubmit(Long userId, Long taskId) {
         Task task = getTask(userId, taskId);
+        if (!task.getStatus().equals("final")) throw new ParameterMisuseException("task isn't done yet to resubmit!");
+        List<Machine> machines = task.getMachines();
+        for (Machine machine : machines) {
+            //realMachine is the real machine object you entered its id
+            Machine realMachine = machineService.findMachineById(machine.getId()).get();
+            for (Task usedTask : realMachine.getTasks()) {
+                //usedTask is a task that is already in the database and are running in that machine
+                if (task.getName().equals(usedTask.getName()) && task.getUser().equals(usedTask.getUser()) && !usedTask.getStatus().equals("final"))
+                    throw new ParameterMisuseException("task name: " + task.getName() + " is already used and running/pending by this user in machine id: " + realMachine.getId());
+            }
+        }
         task.setStatus("pending");
         taskRepository.save(task);
         return task;

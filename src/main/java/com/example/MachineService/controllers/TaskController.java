@@ -15,7 +15,7 @@ import java.util.*;
 @RestController
 public class TaskController {
 
-    private TaskService taskService;
+    private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
@@ -24,6 +24,7 @@ public class TaskController {
     @PostMapping("user/{userId}/job/task/")
     Response addTasks(@RequestBody Task[] tasksArray, @PathVariable Long userId) {
         try {
+            //checking if there is a conflict with the parameters
             List<Task> tasks = Arrays.asList(tasksArray);
             Map<String, String> map= new HashMap<>();
             Void a;
@@ -50,6 +51,7 @@ public class TaskController {
     @DeleteMapping("tenant/{userId}/job/task/")
     Response deleteTasks(@RequestBody long[] idsArray, @PathVariable Long userId) {
         try {
+            //checking if there is a conflict with the parameters
             List<Long> ids = new ArrayList<>();
             for (long l : idsArray) {
                 ids.add(l);
