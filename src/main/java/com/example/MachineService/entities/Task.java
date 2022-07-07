@@ -1,5 +1,8 @@
 package com.example.MachineService.entities;
 
+import com.example.MachineService.enums.Priority;
+import com.example.MachineService.enums.Status;
+import com.example.MachineService.enums.Type;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,14 +30,14 @@ public class Task {
 
     private String name;
 
-    private String type;
+    private Type type;
 
     private String description;
 
-    @ManyToMany
-    private List<Machine> machines = new ArrayList<>();
+    private Status status = Status.PENDING;
 
-    private Integer priority;
+
+    private Priority priority = Priority.FIVE;
 
     @CreatedDate
     private LocalDateTime createdDate;
@@ -42,9 +45,7 @@ public class Task {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    private Integer numberOfTrails = 0;
-
-    private String status = "pending";
+    private int numberOfTrails = 0;
 
     private LocalDateTime nextExecutionTime;
 
@@ -52,6 +53,10 @@ public class Task {
 
     @ManyToOne
     private User user;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "machines_tasks", joinColumns = @JoinColumn(name = "machine_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"))
+    private List<Machine> machines = new ArrayList<>();
 
     public Task() {
     }

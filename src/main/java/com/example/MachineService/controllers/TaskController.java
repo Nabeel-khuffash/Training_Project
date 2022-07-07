@@ -22,15 +22,19 @@ public class TaskController {
     }
 
     @PostMapping("user/{userId}/job/task/")
-    Response addTasks(@RequestBody Task[] tasksArray, @PathVariable Long userId) {
+    Response addTasks(@RequestBody List<Task> tasks, @PathVariable Long userId) {
         try {
-            //checking if there is a conflict with the parameters
-            List<Task> tasks = Arrays.asList(tasksArray);
-            Map<String, String> map= new HashMap<>();
+            Map<Long, List<String>> map = new HashMap<>();
             for (Task task : tasks) {
-                for (Machine machine: task.getMachines()) {
-                    if(map.containsKey("t"+task.getName()+"m"+machine.getId())) throw new ParameterStrategyException("conflict in input tasks!");
-                    map.put("t"+task.getName()+"m"+machine.getId(),"");
+                for (Machine machine : task.getMachines()) {
+                    if (map.containsKey(machine.getId())) {
+                        if (map.get(machine.getId()).contains(task.getName()))
+                            throw new ParameterStrategyException("conflict in input tasks!");
+                        map.get(machine.getId()).add(task.getName());
+                    } else {
+                        map.put(machine.getId(), new ArrayList<>());
+                        map.get(machine.getId()).add(task.getName());
+                    }
                 }
             }
             map.clear();
@@ -48,20 +52,11 @@ public class TaskController {
     }
 
     @DeleteMapping("tenant/{userId}/job/task/")
-    Response deleteTasks(@RequestBody long[] idsArray, @PathVariable Long userId) {
+    Response deleteTasks(@RequestBody List<Long> ids, @PathVariable Long userId) {
         try {
             //checking if there is a conflict with the parameters
-            List<Long> ids = new ArrayList<>();
-            for (long l : idsArray) {
-                ids.add(l);
-            }
-            Map<Long,String> map= new HashMap<>();
-            for(Long id:ids)
-            {
-                if(map.containsKey(id)) throw new ParameterStrategyException("there is 2 tasks have the same id!");
-                map.put(id,"");
-            }
-            map.clear();
+            Set<Long> idsSet = new HashSet<>(ids);
+            if (ids.size() != idsSet.size()) throw new ParameterStrategyException("there is 2 tasks have the same id!");
             taskService.deleteTasks(ids, userId);
             return Response.status(Response.Status.ACCEPTED).entity("all tasks deleted!").build();
         } catch (NotFoundException notFoundException) {

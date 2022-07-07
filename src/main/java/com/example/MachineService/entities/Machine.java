@@ -29,7 +29,7 @@ public class Machine {
     @ManyToOne
     private User user;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "machines")
     List<Task> tasks = new ArrayList<>();
 
     public Machine() {
