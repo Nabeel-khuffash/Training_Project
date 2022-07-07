@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +21,12 @@ public class User {
 
     private String name;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "machines_users", joinColumns = @JoinColumn(name = "machine_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private List<Machine> machines = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<>();
 
     public User() {
     }
@@ -34,4 +35,25 @@ public class User {
         this.id = id;
     }
 
+    public String toString2() {
+        StringBuilder str = new StringBuilder("User{" + "id=" + id + ", name='" + name + '\'' + "machines=[");
+        for (Machine machine : machines) {
+            str.append(machine.toString3());
+            str.append(',');
+        }
+        str.deleteCharAt(str.length() - 1);
+        str.append("], tasks=[");
+        for (Task task : tasks) {
+            str.append(task.toString3());
+            str.append(',');
+        }
+        str.deleteCharAt(str.length() - 1);
+        str.append("]}");
+        return str.toString();
+    }
+
+    //toString3 convert object to string without the objects inside
+    public String toString3() {
+        return "User{" + "id=" + id + ", name='" + name + '\'' + '}';
+    }
 }

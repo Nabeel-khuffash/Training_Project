@@ -54,8 +54,7 @@ public class Task {
     @ManyToOne
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "machines_tasks", joinColumns = @JoinColumn(name = "machine_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "tasks", fetch = FetchType.LAZY)
     private List<Machine> machines = new ArrayList<>();
 
     public Task() {
@@ -63,5 +62,22 @@ public class Task {
 
     public Task(Long id) {
         this.id = id;
+    }
+
+
+    public String toString2() {
+        StringBuilder str = new StringBuilder("Task{" + "id=" + id + ", name='" + name + '\'' + ", type=" + type + ", description='" + description + '\'' + ", status=" + status + ", priority=" + priority + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + ", numberOfTrails=" + numberOfTrails + ", nextExecutionTime=" + nextExecutionTime + ", lastExecutionTime=" + lastExecutionTime + ", user=" + user.toString3() + "machines=[");
+        for (Machine machine : machines) {
+            str.append(machine.toString3());
+            str.append(',');
+        }
+        str.deleteCharAt(str.length() - 1);
+        str.append("]}");
+        return str.toString();
+    }
+
+    //toString3 convert object to string without the objects inside
+    public String toString3() {
+        return "Task{" + "id=" + id + ", name='" + name + '\'' + ", type=" + type + ", description='" + description + '\'' + ", status=" + status + ", priority=" + priority + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + ", numberOfTrails=" + numberOfTrails + ", nextExecutionTime=" + nextExecutionTime + ", lastExecutionTime=" + lastExecutionTime + '}';
     }
 }

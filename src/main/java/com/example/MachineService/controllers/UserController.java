@@ -25,7 +25,7 @@ public class UserController {
     public Response addUser(@RequestBody User user) {
         try {
             User result = userService.addUser(user);
-            return Response.status(Response.Status.CREATED).entity(result).build();
+            return Response.status(Response.Status.CREATED).entity(result.toString2()).build();
         } catch (KeyAlreadyExistsException keyAlreadyExistsException) {
             return Response.status(Response.Status.CONFLICT).entity(keyAlreadyExistsException.getMessage()).build();
         } catch (Exception exception) {

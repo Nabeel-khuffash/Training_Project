@@ -44,8 +44,14 @@ public class TaskService {
                 }
             }
         }
+        User user = userService.findUserById(userId).get();
         for (Task task : tasks) {
-            task.setUser(new User(userId));
+            task.setUser(user);
+            user.getTasks().add(task);
+            List<Machine> machines = task.getMachines();
+            for (Machine machine : machines) {
+                machineService.findMachineById(machine.getId()).get().getTasks().add(new Task(task.getId()));
+            }
             taskRepository.save(task);
         }
         return tasks;
@@ -63,7 +69,8 @@ public class TaskService {
 
     public Task reSubmit(Long userId, Long taskId) {
         Task task = getTask(userId, taskId);
-        if (!task.getStatus().equals(Status.COMPLETED)) throw new ParameterMisuseException("task isn't done yet to resubmit!");
+        if (!task.getStatus().equals(Status.COMPLETED))
+            throw new ParameterMisuseException("task isn't done yet to resubmit!");
         List<Machine> machines = task.getMachines();
         for (Machine machine : machines) {
             //realMachine is the real machine object you entered its id

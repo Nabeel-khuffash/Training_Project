@@ -39,7 +39,11 @@ public class TaskController {
             }
             map.clear();
             List<Task> result = taskService.addTasks(tasks, userId);
-            return Response.status(Response.Status.CREATED).entity(result).build();
+            StringBuilder str = new StringBuilder();
+            for (Task task : result) {
+                str.append(task.toString2());
+            }
+            return Response.status(Response.Status.CREATED).entity(str.toString()).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (ParameterMisuseException parameterMisuseException) {
@@ -74,7 +78,7 @@ public class TaskController {
     Response reSubmit(@PathVariable Long userId, @PathVariable Long taskId) {
         try {
             Task result = taskService.reSubmit(userId, taskId);
-            return Response.status(Response.Status.ACCEPTED).entity(result).build();
+            return Response.status(Response.Status.ACCEPTED).entity(result.toString2()).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (ParameterMisuseException parameterMisuseException) {
@@ -88,7 +92,7 @@ public class TaskController {
     Response getTask(@PathVariable Long userId, @PathVariable Long taskId) {
         try {
             Task result = taskService.getTask(userId, taskId);
-            return Response.status(Response.Status.FOUND).entity(result).build();
+            return Response.status(Response.Status.FOUND).entity(result.toString2()).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (ParameterMisuseException parameterMisuseException) {

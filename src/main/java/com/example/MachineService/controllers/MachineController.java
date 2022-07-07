@@ -2,6 +2,7 @@ package com.example.MachineService.controllers;
 
 import com.example.MachineService.entities.Machine;
 import com.example.MachineService.services.MachineService;
+import org.hibernate.procedure.ParameterMisuseException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.NotFoundException;
@@ -21,7 +22,7 @@ public class MachineController {
     Response addMachine(@RequestBody Machine machine, @PathVariable Long userId) {
         try {
             Machine result = machineService.addMachine(machine, userId);
-            return Response.status(Response.Status.CREATED).entity(result).build();
+            return Response.status(Response.Status.CREATED).entity(result.toString2()).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (Exception exception) {
@@ -33,7 +34,7 @@ public class MachineController {
     Response updateMachine(@RequestBody Machine machine, @PathVariable Long userId) {
         try {
             Machine result = machineService.updateMachine(machine, userId);
-            return Response.status(Response.Status.CREATED).entity(result).build();
+            return Response.status(Response.Status.CREATED).entity(result.toString2()).build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (Exception exception) {
@@ -48,6 +49,8 @@ public class MachineController {
             return Response.status(Response.Status.ACCEPTED).entity("Device deleted").build();
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
+        } catch (ParameterMisuseException parameterMisuseException) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(parameterMisuseException.getMessage()).build();
         } catch (Exception exception) {
             return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }

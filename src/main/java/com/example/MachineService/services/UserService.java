@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -27,5 +28,9 @@ public class UserService {
 
     public boolean isUserIn(Long id) {
         return userRepository.findById(id).isPresent();
+    }
+
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
 }
