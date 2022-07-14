@@ -15,21 +15,20 @@ import javax.ws.rs.core.Response;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/")
-    public Response addUser(@RequestBody User user)
-    {
+    public Response addUser(@RequestBody User user) {
         try {
-            User result = userService.saveOrUpdateUser(user);
-            return Response.status(Response.Status.CREATED).entity(user).build();
-        }
-        catch (Exception e)
-        {
+            User result = userService.addUser(user);
+            return Response.status(Response.Status.CREATED).entity(result.toString2()).build();
+        } catch (KeyAlreadyExistsException keyAlreadyExistsException) {
+            return Response.status(Response.Status.CONFLICT).entity(keyAlreadyExistsException.getMessage()).build();
+        } catch (Exception exception) {
             return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }

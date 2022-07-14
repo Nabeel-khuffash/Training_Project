@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+
+<body>
+
+<div class="alert alert-success" role="alert" th:if="${success}">
+  task created!
+</div>
+
+<div class="alert alert-success" role="alert" th:if="${failed}">
+  task name is already used in this machine!
+</div>
+
+
+<div class="container">
+
+
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <h4>Submit Task</h4>
+      <br/>
+      <p th:text="@{'User Id is: '+${userId}}">t</p>
+      <form id="AddDevice" method="POST" th:action="task" >
+        <div th:object="${Task}">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="name"
+                   placeholder="Enter task name"
+                   required="required"
+                   th:field="*{name}">
+            <small th:errors="*{name}" style="color:red;"></small>
+          </div>
+          <div class="form-group">
+            <label for="type">Type</label>
+            <input type="text"
+                   class="form-control"
+                   id="type"
+                   placeholder="Enter task type"
+                   required="required"
+                   th:field="*{type}">
+            <small th:errors="*{type}" style="color:red;"></small>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text"
+                   class="form-control"
+                   id="description"
+                   placeholder="Enter task description"
+                   required="required"
+                   th:field="*{description}">
+            <small th:errors="*{description}" style="color:red;"></small>
+          </div>
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <input type="text"
+                   class="form-control"
+                   id="priority"
+                   placeholder="Enter task priority"
+                   required="required"
+                   th:field="*{priority}">
+            <small th:errors="*{priority}" style="color:red;"></small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="machines">Machines</label>
+          <input type="text"
+                 class="form-control"
+                 id="machines"
+                 placeholder="machine1Id, machine2Id, ..."
+                 required="required"
+                 th:value="${machinesString}">
+          <small th:errors="${machinesString}" style="color:red;"></small>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+</div>
+
+
+
+
+
+
+</body>
+
+</html>
+
+
