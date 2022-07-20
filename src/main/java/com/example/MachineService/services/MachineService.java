@@ -41,6 +41,10 @@ public class MachineService {
         return machine;
     }
 
+    public void updateMachine(Machine machine) {
+        machineRepository.save(machine);
+    }
+
     public void deleteMachine(Long userId, Long deviceId) {
         if (!userService.isUserIn(userId)) {
             throw new NotFoundException("User not found!");
