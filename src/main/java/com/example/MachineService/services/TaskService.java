@@ -93,4 +93,24 @@ public class TaskService {
             throw new ParameterMisuseException("task isn't belong to this user!");
         return task.get();
     }
+
+    public void updateTaskStatus(String str) {
+        String newStatus = str.substring(0, str.indexOf(",") + 1);
+        Optional<Task> task = taskRepository.findById(Long.parseLong(str.substring(str.indexOf(","))) + 1);
+        if (task.isEmpty()) return;
+        if (newStatus.equals("IN_PROGRESS")) {
+            task.get().setStatus(Status.IN_PROGRESS);
+            for (Machine machine : task.get().getMachines()) {
+                machine.setPoolNumber(machine.getPoolNumber() + 1);
+                machineService.updateMachine(machine);
+            }
+        } else {
+            task.get().setStatus(Status.COMPLETED);
+            for (Machine machine : task.get().getMachines()) {
+                machine.setPoolNumber(machine.getPoolNumber() - 1);
+                machineService.updateMachine(machine);
+            }
+        }
+        taskRepository.save(task.get());
+    }
 }

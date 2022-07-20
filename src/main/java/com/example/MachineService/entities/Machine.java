@@ -15,7 +15,6 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 public class Machine {
-
     @Id
     @GeneratedValue
     private Long id;
@@ -25,6 +24,8 @@ public class Machine {
     private String ipAddress;
 
     private String location;
+
+    private int poolNumber = 0;
 
     @ManyToMany(mappedBy = "machines")
     private List<User> users = new ArrayList<>();

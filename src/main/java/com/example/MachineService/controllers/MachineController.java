@@ -28,10 +28,6 @@ public class MachineController {
         } catch (Exception exception) {
             return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
-        catch (Exception e)
-        {
-            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
-        }
     }
 
     @PutMapping("/{userId}/machine/device/{deviceId}")
@@ -42,10 +38,6 @@ public class MachineController {
         } catch (NotFoundException notFoundException) {
             return Response.status(Response.Status.NOT_FOUND).entity(notFoundException.getMessage()).build();
         } catch (Exception exception) {
-            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
-        }
-        catch (Exception e)
-        {
             return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
@@ -60,10 +52,6 @@ public class MachineController {
         } catch (ParameterMisuseException parameterMisuseException) {
             return Response.status(Response.Status.BAD_REQUEST).entity(parameterMisuseException.getMessage()).build();
         } catch (Exception exception) {
-            return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
-        }
-        catch (Exception e)
-        {
             return Response.status(Response.Status.EXPECTATION_FAILED).entity("something wrong happened").build();
         }
     }
